@@ -1,18 +1,18 @@
 // ===================================
-// Portfolio Website - Enhanced JavaScript with WOW Effects
-// Based on Awwwards & GSAP showcase research
+// Portfolio Website - Optimized JavaScript (Performance Fixed)
+// Removed laggy animations, optimized for smooth 60fps
 // ===================================
 
 // Initialize AOS (Animate On Scroll)
 AOS.init({
-    duration: 1000,
+    duration: 800,
     easing: 'ease-out-cubic',
     once: true,
     offset: 100,
-    delay: 100
+    delay: 50
 });
 
-// ===== Enhanced Magnetic Cursor =====
+// ===== Optimized Cursor (Lighter) =====
 const cursor = document.createElement('div');
 const cursorDot = document.createElement('div');
 cursor.className = 'custom-cursor';
@@ -28,7 +28,6 @@ cursor.style.cssText = `
     z-index: 9999;
     transition: all 0.15s ease;
     transform: translate(-50%, -50%);
-    mix-blend-mode: difference;
 `;
 
 cursorDot.style.cssText = `
@@ -76,8 +75,8 @@ if (window.innerWidth > 768) {
     }
     animateCursor();
     
-    // Magnetic effect on interactive elements
-    const magneticElements = document.querySelectorAll('a, button, .project-card, .btn');
+    // Simple hover effect (no magnetic pull - was causing lag)
+    const magneticElements = document.querySelectorAll('a, button, .btn');
     magneticElements.forEach(el => {
         el.addEventListener('mouseenter', () => {
             cursor.style.width = '60px';
@@ -91,19 +90,6 @@ if (window.innerWidth > 768) {
             cursor.style.height = '40px';
             cursor.style.borderColor = 'rgba(99, 102, 241, 0.5)';
             cursor.style.backgroundColor = 'transparent';
-        });
-        
-        // Magnetic pull effect
-        el.addEventListener('mousemove', (e) => {
-            const rect = el.getBoundingClientRect();
-            const x = e.clientX - rect.left - rect.width / 2;
-            const y = e.clientY - rect.top - rect.height / 2;
-            
-            el.style.transform = `translate(${x * 0.2}px, ${y * 0.2}px)`;
-        });
-        
-        el.addEventListener('mouseleave', () => {
-            el.style.transform = 'translate(0, 0)';
         });
     });
 }
@@ -155,23 +141,23 @@ navLinks.forEach(link => {
     });
 });
 
-// ===== Enhanced Parallax Effect =====
+// ===== Lightweight Parallax (Optimized) =====
+let ticking = false;
 window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    
-    // Hero parallax
-    const hero = document.querySelector('.hero');
-    if (hero) {
-        hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+    if (!ticking) {
+        window.requestAnimationFrame(() => {
+            const scrolled = window.pageYOffset;
+            
+            // Only parallax hero (removed other heavy parallax)
+            const hero = document.querySelector('.hero');
+            if (hero && scrolled < window.innerHeight) {
+                hero.style.transform = `translateY(${scrolled * 0.3}px)`;
+            }
+            
+            ticking = false;
+        });
+        ticking = true;
     }
-    
-    // Floating elements parallax
-    const floatingElements = document.querySelectorAll('.about-image, .image-placeholder');
-    floatingElements.forEach((el, index) => {
-        const speed = 0.1 + (index * 0.05);
-        const yPos = -(scrolled * speed);
-        el.style.transform = `translateY(${yPos}px)`;
-    });
 });
 
 // ===== Active Navigation Link on Scroll =====
@@ -197,8 +183,6 @@ window.addEventListener('scroll', () => {
 
 // ===== Navbar Background on Scroll =====
 const navbar = document.querySelector('.navbar');
-let lastScroll = 0;
-
 window.addEventListener('scroll', () => {
     const currentScroll = window.pageYOffset;
     
@@ -209,30 +193,19 @@ window.addEventListener('scroll', () => {
         navbar.style.boxShadow = 'none';
         navbar.style.background = 'rgba(10, 10, 10, 0.95)';
     }
-    
-    lastScroll = currentScroll;
 });
 
-// ===== Enhanced Project Card 3D Tilt Effect =====
+// ===== Simplified Project Card Hover (No 3D Tilt - Was Laggy) =====
 const projectCards = document.querySelectorAll('.project-card');
 
 projectCards.forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        
-        const rotateX = (y - centerY) / 15;
-        const rotateY = (centerX - x) / 15;
-        
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-8px) scale(1.02)`;
+    // Simple scale on hover - much smoother
+    card.addEventListener('mouseenter', () => {
+        card.style.transform = 'translateY(-8px) scale(1.02)';
     });
     
     card.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0) scale(1)';
+        card.style.transform = 'translateY(0) scale(1)';
     });
 });
 
@@ -304,53 +277,11 @@ scrollToTopBtn.addEventListener('click', () => {
 
 scrollToTopBtn.addEventListener('mouseenter', () => {
     scrollToTopBtn.style.transform = 'translateY(-5px) scale(1.1)';
-    scrollToTopBtn.style.boxShadow = '0 6px 20px rgba(99, 102, 241, 0.6)';
 });
 
 scrollToTopBtn.addEventListener('mouseleave', () => {
     scrollToTopBtn.style.transform = 'translateY(0) scale(1)';
-    scrollToTopBtn.style.boxShadow = '0 4px 15px rgba(99, 102, 241, 0.4)';
 });
-
-// ===== Animated Gradient Background =====
-const hero = document.querySelector('.hero');
-if (hero) {
-    let gradientAngle = 135;
-    setInterval(() => {
-        gradientAngle = (gradientAngle + 1) % 360;
-        hero.style.background = `linear-gradient(${gradientAngle}deg, rgba(10, 10, 10, 1) 0%, rgba(20, 20, 30, 1) 100%)`;
-    }, 50);
-}
-
-// ===== Text Reveal Animation =====
-const heroTitle = document.querySelector('.hero-title');
-if (heroTitle) {
-    const text = heroTitle.innerHTML;
-    heroTitle.innerHTML = '';
-    
-    const words = text.split(' ');
-    words.forEach((word, index) => {
-        const span = document.createElement('span');
-        span.innerHTML = word + ' ';
-        span.style.display = 'inline-block';
-        span.style.opacity = '0';
-        span.style.transform = 'translateY(30px)';
-        span.style.animation = `fadeInUp 0.8s ease forwards ${index * 0.1}s`;
-        heroTitle.appendChild(span);
-    });
-}
-
-// Add fadeInUp animation
-const style = document.createElement('style');
-style.textContent = `
-    @keyframes fadeInUp {
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-`;
-document.head.appendChild(style);
 
 // ===== Loading Animation =====
 window.addEventListener('load', () => {
@@ -361,22 +292,6 @@ window.addEventListener('load', () => {
     }, 100);
 });
 
-// ===== Floating Animation for Hero Elements =====
-const floatingElements = document.querySelectorAll('.hero-content, .scroll-indicator');
-floatingElements.forEach((el, index) => {
-    el.style.animation = `float 3s ease-in-out infinite ${index * 0.5}s`;
-});
-
-const floatStyle = document.createElement('style');
-floatStyle.textContent = `
-    @keyframes float {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
-    }
-`;
-document.head.appendChild(floatStyle);
-
 // ===== Console Message =====
-console.log('%c🎨 Portfolio Enhanced! ', 'font-size: 20px; font-weight: bold; color: #6366f1; background: #0a0a0a; padding: 10px;');
-console.log('%cWOW effects active: Magnetic cursor, Parallax, 3D tilt, Smooth animations', 'font-size: 14px; color: #a0a0a0;');
-console.log('%c📧 Contact: hello@designer.com', 'font-size: 14px; color: #6366f1;');
+console.log('%c🎨 Portfolio Optimized! ', 'font-size: 20px; font-weight: bold; color: #6366f1;');
+console.log('%cSmooth 60fps animations, real project images', 'font-size: 14px; color: #a0a0a0;');
